@@ -8,15 +8,15 @@
 
 | 平台 | 下载 | 版本与构建日期 |
 | --- | --- | --- |
-| Android | [下载 APK](https://github.com/xuhan-rgb/ssh-tool-app-releases/raw/refs/heads/main/downloads/ssh-tool-app-v1.0.3.apk) | 1.0.3，build 73，2026-10-22 |
-| macOS Apple Silicon（M 系列芯片） | [下载 DMG](https://github.com/xuhan-rgb/ssh-tool-app-releases/raw/refs/heads/main/downloads/SSH_Tool_App-1.0.3-build72-macos-arm64.dmg) | 1.0.3，build 72，2026-10-22（UTC） |
-| 被控 Linux x86_64／ARM64 | [下载飞书 P2P 安装脚本](https://github.com/xuhan-rgb/ssh-tool-app-releases/raw/refs/heads/main/scripts/install-feishu-p2p.sh) | 2026-10-22，单文件，内置两种架构辅助程序 |
+| Android | [下载 APK](https://github.com/xuhan-rgb/ssh-tool-app-releases/releases/download/v1.0.3/ssh-tool-app-v1.0.3.apk) | 1.0.3，build 73，2026-10-22 |
+| macOS Apple Silicon（M 系列芯片） | [下载 DMG](https://github.com/xuhan-rgb/ssh-tool-app-releases/releases/download/v1.0.3/SSH_Tool_App-1.0.3-build72-macos-arm64.dmg) | 1.0.3，build 72，2026-10-22（UTC） |
+| 被控 Linux x86_64／ARM64 | [下载飞书 P2P 安装脚本](https://github.com/xuhan-rgb/ssh-tool-app-releases/releases/download/v1.0.3/install-feishu-p2p.sh) | 2026-10-22，单文件，内置两种架构辅助程序 |
 
 Android 更新时直接覆盖安装，不要先卸载旧版，以保留连接配置。macOS 打开 DMG，将应用复制到“应用程序”后启动。macOS 包取自 Mac 上最新编译产物，已核对应用内版本和 build 72，并通过 DMG 完整性与签名校验。各平台功能入口以实际安装版本为准。当前未提供 Intel Mac 安装包。
 
-以上为仓库内的直接下载，历史正式 Release 见 [版本页面](https://github.com/xuhan-rgb/ssh-tool-app-releases/releases)。App 内自动检查更新以正式 Release 为准，仓库文件更新不会自动推送到已安装 App。
+安装包仅作为 [v1.0.3 正式 Release](https://github.com/xuhan-rgb/ssh-tool-app-releases/releases/tag/v1.0.3) 附件分发，代码分支不保存 APK 和 DMG。App 内检查更新以正式 Release 为准。
 
-可下载 [SHA256SUMS](SHA256SUMS) 核对安装包和脚本完整性；在仓库根目录执行 `sha256sum -c SHA256SUMS`。
+下载 Release 附件中的 [SHA256SUMS](https://github.com/xuhan-rgb/ssh-tool-app-releases/releases/download/v1.0.3/SHA256SUMS)，与安装包、脚本放在同一目录后执行 `sha256sum -c SHA256SUMS`。
 
 ## 普通 SSH 快速上手
 

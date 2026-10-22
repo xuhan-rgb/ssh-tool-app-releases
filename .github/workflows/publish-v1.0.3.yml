@@ -1,0 +1,62 @@
+name: Publish v1.0.3 release assets
+
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/publish-v1.0.3.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-v1.0.3
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Recover and verify existing compiled artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release-assets
+          cd release-assets
+          base="https://raw.githubusercontent.com/$GH_REPO/15344c3b379f0d3f3d40c62eb957944047d574ba"
+          curl --fail --location --retry 3 "$base/downloads/ssh-tool-app-v1.0.3.apk" -o ssh-tool-app-v1.0.3.apk
+          curl --fail --location --retry 3 "$base/downloads/SSH_Tool_App-1.0.3-build72-macos-arm64.dmg" -o SSH_Tool_App-1.0.3-build72-macos-arm64.dmg
+          curl --fail --location --retry 3 "$base/scripts/install-feishu-p2p.sh" -o install-feishu-p2p.sh
+          cat > SHA256SUMS <<'CHECKSUMS'
+          2979e141386ab00a554ae0945c6604381b87e6b262f75ddcd1a672167b8ad603  ssh-tool-app-v1.0.3.apk
+          15af70e6c1ac4f7a642ebd8ac71540060f7a65b96538c84b4ff0136eaddce2a6  SSH_Tool_App-1.0.3-build72-macos-arm64.dmg
+          e055d63fecca40189d4a9136520545efa816deea7620a0fbc648a243b2fe5019  install-feishu-p2p.sh
+          CHECKSUMS
+          sha256sum -c SHA256SUMS
+      - name: Publish verified files on the version tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > release-notes.md <<'NOTES'
+          Android、macOS 安装包和被控 Linux 电脑端脚本请从下方 Assets 下载。
+
+          - Android：1.0.3，build 73。更新时直接覆盖安装，不要先卸载。
+          - macOS：1.0.3，build 72，仅 Apple Silicon（M 系列芯片）。
+          - 被控端：install-feishu-p2p.sh，支持 Linux x86_64／ARM64，以普通用户执行 bash install-feishu-p2p.sh。
+          - SHA256SUMS：安装包及脚本的完整性校验值。
+
+          本版更新飞书 P2P 自动协商、对话与远程桌面体验，并补充安装、配对和排错教程。
+
+          使用教程：https://github.com/xuhan-rgb/ssh-tool-app-releases/blob/main/docs/user-guide.md
+          程序源码：https://github.com/xuhan-rgb/ssh-tool-app/tree/v1.0.3
+          NOTES
+          if gh release view v1.0.3 > /dev/null 2>&1; then
+            gh release upload v1.0.3 release-assets/* --clobber
+          else
+            gh release create v1.0.3 release-assets/* --verify-tag --draft --title 'SSH Tool App v1.0.3' --notes-file release-notes.md
+          fi
+          gh release edit v1.0.3 --draft=false --latest --title 'SSH Tool App v1.0.3' --notes-file release-notes.md
